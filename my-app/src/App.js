@@ -1,14 +1,19 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+	// Императивный стиль: получение текущего года
+	const currentYear = new Date().getFullYear(); // Здесь происходит императивное действие
+
 	return (
+		// Декларативный стиль: структура и логика UI
 		<div className="App">
 			<header className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
-				<p>
+				{/* <p>
 					Edit <code>src/App.js</code> and save to reload.
-				</p>
+				</p> */}
 				<a
 					className="App-link"
 					href="https://reactjs.org"
@@ -17,6 +22,7 @@ function App() {
 				>
 					Learn React
 				</a>
+				<p className="App-year">{currentYear}</p>
 			</header>
 		</div>
 	);
