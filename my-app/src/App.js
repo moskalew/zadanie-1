@@ -66,15 +66,15 @@ function App() {
 					</button>
 					<button
 						className={styles.button}
-						onClick={() => handleOperationClick('+')}
-					>
-						+
-					</button>
-					<button
-						className={styles.button}
 						onClick={() => handleOperationClick('-')}
 					>
 						-
+					</button>
+					<button
+						className={styles.button}
+						onClick={() => handleOperationClick('+')}
+					>
+						+
 					</button>
 					<button className={styles.button} onClick={handleEqualsClick}>
 						=

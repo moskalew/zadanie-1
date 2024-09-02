@@ -1,5 +1,5 @@
 .calculator {
-	width: 270px;
+	width: 240px;
 	margin: 50px auto;
 	border: 2px solid #000;
 	border-radius: 10px;
@@ -53,7 +53,7 @@
 }
 
 .zeroButton {
-	grid-column: span 3;
+	grid-column: span 3; /* кнопка "0" займет весь ряд */
 	width: 170px;
 }
 
