@@ -1,5 +1,5 @@
 .calculator {
-	width: 200px;
+	width: 270px;
 	margin: 50px auto;
 	border: 2px solid #000;
 	border-radius: 10px;
@@ -25,9 +25,21 @@
 }
 
 .buttons {
+	display: flex;
+	justify-content: space-between;
+}
+
+.numberButtons {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 10px;
+}
+
+.operationButtons {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	gap: 10px;
+	margin-left: 10px;
 }
 
 .button {
@@ -38,6 +50,11 @@
 	border-radius: 5px;
 	background-color: #e0e0e0;
 	cursor: pointer;
+}
+
+.zeroButton {
+	grid-column: span 3;
+	width: 170px;
 }
 
 .button:hover {

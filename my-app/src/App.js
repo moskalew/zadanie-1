@@ -6,7 +6,7 @@ function App() {
 	const [result, setResult] = useState(null);
 	const [isResult, setIsResult] = useState(false);
 
-	const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
 	const handleNumberClick = (number) => {
 		if (isResult) {
@@ -49,33 +49,37 @@ function App() {
 				{display}
 			</div>
 			<div className={styles.buttons}>
-				{numbers.map((number) => (
-					<button
-						key={number}
-						className={styles.button}
-						onClick={() => handleNumberClick(number)}
-					>
-						{number}
+				<div className={styles.numberButtons}>
+					{numbers.map((number) => (
+						<button
+							key={number}
+							className={`${styles.button} ${number === '0' ? styles.zeroButton : ''}`}
+							onClick={() => handleNumberClick(number)}
+						>
+							{number}
+						</button>
+					))}
+				</div>
+				<div className={styles.operationButtons}>
+					<button className={styles.button} onClick={handleResetClick}>
+						C
 					</button>
-				))}
-				<button
-					className={styles.button}
-					onClick={() => handleOperationClick('+')}
-				>
-					+
-				</button>
-				<button
-					className={styles.button}
-					onClick={() => handleOperationClick('-')}
-				>
-					-
-				</button>
-				<button className={styles.button} onClick={handleEqualsClick}>
-					=
-				</button>
-				<button className={styles.button} onClick={handleResetClick}>
-					C
-				</button>
+					<button
+						className={styles.button}
+						onClick={() => handleOperationClick('+')}
+					>
+						+
+					</button>
+					<button
+						className={styles.button}
+						onClick={() => handleOperationClick('-')}
+					>
+						-
+					</button>
+					<button className={styles.button} onClick={handleEqualsClick}>
+						=
+					</button>
+				</div>
 			</div>
 		</div>
 	);
