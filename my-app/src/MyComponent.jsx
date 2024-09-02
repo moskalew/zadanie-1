@@ -1,10 +1,18 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
+import styles from './MyComponent.module.css';
 
-export const MyComponent = (props) => {
-	const date = new Date();
+export const MyComponent = () => {
+	const [showRedText, setShowRedText] = useState(false);
 
-	useEffect(() => {
-		console.log(date);
-	}, []);
-	return <div>{String(date)}</div>;
+	const onClick = () => {
+		setShowRedText(!showRedText);
+	};
+
+	const text = <div className={showRedText ? styles.red : styles.white}>Текст</div>;
+	return (
+		<>
+			{text}
+			<button onClick={onClick}>Изменить цвет кнопки</button>
+		</>
+	);
 };

@@ -1,32 +1,82 @@
-import React from 'react';
-import logo from './logo.svg';
-import { MyComponent } from './MyComponent';
-import './App.css';
+import React, { useState } from 'react';
+import styles from './App.module.css';
 
 function App() {
-	// Императивный стиль: получение текущего года
-	const currentYear = new Date().getFullYear(); // Здесь происходит императивное действие
+	const [display, setDisplay] = useState('');
+	const [result, setResult] = useState(null);
+	const [isResult, setIsResult] = useState(false);
+
+	const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+	const handleNumberClick = (number) => {
+		if (isResult) {
+			setDisplay(number);
+			setIsResult(false);
+		} else {
+			setDisplay(display + number);
+		}
+	};
+
+	const handleOperationClick = (operation) => {
+		if (isResult) {
+			setDisplay(result + operation);
+			setIsResult(false);
+		} else {
+			setDisplay(display + operation);
+		}
+	};
+
+	const handleEqualsClick = () => {
+		try {
+			const evaluatedResult = eval(display);
+			setResult(evaluatedResult);
+			setDisplay(evaluatedResult.toString());
+			setIsResult(true);
+		} catch (error) {
+			setDisplay('Error');
+		}
+	};
+
+	const handleResetClick = () => {
+		setDisplay('');
+		setResult(null);
+		setIsResult(false);
+	};
 
 	return (
-		// Декларативный стиль: структура и логика UI
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
+		<div className={styles.calculator}>
+			<div className={`${styles.display} ${isResult ? styles.result : ''}`}>
+				{display}
+			</div>
+			<div className={styles.buttons}>
+				{numbers.map((number) => (
+					<button
+						key={number}
+						className={styles.button}
+						onClick={() => handleNumberClick(number)}
+					>
+						{number}
+					</button>
+				))}
+				<button
+					className={styles.button}
+					onClick={() => handleOperationClick('+')}
 				>
-					Learn React
-				</a>
-				<p className="App-year">{currentYear}</p>
-
-				<MyComponent type="normal" value="123" />
-			</header>
+					+
+				</button>
+				<button
+					className={styles.button}
+					onClick={() => handleOperationClick('-')}
+				>
+					-
+				</button>
+				<button className={styles.button} onClick={handleEqualsClick}>
+					=
+				</button>
+				<button className={styles.button} onClick={handleResetClick}>
+					C
+				</button>
+			</div>
 		</div>
 	);
 }
