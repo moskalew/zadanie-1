@@ -1,62 +1,72 @@
-.calculator {
-	width: 240px;
-	margin: 50px auto;
-	border: 2px solid #000;
-	border-radius: 10px;
+.app {
+	text-align: center;
+	max-width: 700px;
+	margin: 0 auto;
 	padding: 20px;
-	background-color: #f0f0f0;
 }
 
-.display {
-	width: 100%;
-	height: 40px;
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid #000;
-	border-radius: 5px;
-	font-size: 24px;
-	text-align: right;
-	padding-right: 10px;
-	box-sizing: border-box;
+.error {
+	color: var(--error-color);
+	font-weight: bold;
 }
 
-.result {
-	color: green;
+.page-heading {
+	margin: 0 0 0.5rem;
+	font-size: 25px;
+	font-weight: bold;
 }
 
-.buttons {
+.no-margin-text {
+	margin: 0;
+}
+
+.current-value {
+	font-weight: bold;
+}
+
+.buttons-container {
+	margin-top: 1.5rem;
 	display: flex;
-	justify-content: space-between;
-}
-
-.numberButtons {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	justify-content: center;
 	gap: 10px;
-}
-
-.operationButtons {
-	display: grid;
-	grid-template-columns: repeat(1, 1fr);
-	gap: 10px;
-	margin-left: 10px;
 }
 
 .button {
-	width: 50px;
-	height: 50px;
+	padding: 0.5em 0.75em;
+	background-color: hsl(var(--accent-color-hue), var(--accent-color-saturation), 92%);
 	font-size: 18px;
-	border: 1px solid #000;
-	border-radius: 5px;
-	background-color: #e0e0e0;
-	cursor: pointer;
-}
-
-.zeroButton {
-	grid-column: span 3; /* кнопка "0" займет весь ряд */
-	width: 170px;
+	border: none;
+	transition: background-color 0.15s ease;
 }
 
 .button:hover {
-	background-color: #ccc;
+	background-color: hsl(var(--accent-color-hue), var(--accent-color-saturation), 87%);
+}
+
+.button:active {
+	background-color: hsl(var(--accent-color-hue), var(--accent-color-saturation), 82%);
+}
+
+.button:disabled {
+	background-color: var(--disabled-color);
+}
+
+.list-container {
+	margin-top: 1.5rem;
+}
+
+.list-heading {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 0 0 0.5rem;
+}
+
+.list {
+	text-align: left;
+	margin: 0 auto;
+	max-width: 300px;
+}
+
+.list-item:not(:last-child) {
+	margin-bottom: 0.5em;
 }

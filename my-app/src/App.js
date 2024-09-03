@@ -2,84 +2,69 @@ import React, { useState } from 'react';
 import styles from './App.module.css';
 
 function App() {
-	const [display, setDisplay] = useState('');
-	const [result, setResult] = useState(null);
-	const [isResult, setIsResult] = useState(false);
+	const [value, setValue] = useState('');
+	const [list, setList] = useState([]);
+	const [error, setError] = useState('');
 
-	const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+	const isValueValid = value.length >= 3;
 
-	const handleNumberClick = (number) => {
-		if (isResult) {
-			setDisplay(number);
-			setIsResult(false);
+	const onInputButtonClick = () => {
+		const promptValue = prompt('Введите значение:');
+
+		if (promptValue && promptValue.length >= 3) {
+			setValue(promptValue);
+			setError('');
 		} else {
-			setDisplay(display + number);
+			setError('Введенное значение должно содержать минимум 3 символа');
 		}
 	};
 
-	const handleOperationClick = (operation) => {
-		if (isResult) {
-			setDisplay(result + operation);
-			setIsResult(false);
-		} else {
-			setDisplay(display + operation);
+	const onAddButtonClick = () => {
+		if (isValueValid) {
+			const newItem = {
+				id: Date.now(),
+				value: value,
+				date: new Date().toLocaleString(),
+			};
+			setList((prevList) => [...prevList, newItem]);
+			setValue('');
+			setError('');
 		}
-	};
-
-	const handleEqualsClick = () => {
-		try {
-			const evaluatedResult = eval(display);
-			setResult(evaluatedResult);
-			setDisplay(evaluatedResult.toString());
-			setIsResult(true);
-		} catch (error) {
-			setDisplay('Error');
-		}
-	};
-
-	const handleResetClick = () => {
-		setDisplay('');
-		setResult(null);
-		setIsResult(false);
 	};
 
 	return (
-		<div className={styles.calculator}>
-			<div className={`${styles.display} ${isResult ? styles.result : ''}`}>
-				{display}
+		<div className={styles.app}>
+			<h1 className={styles['page-heading']}>Ввод значения</h1>
+			<p className={styles['no-margin-text']}>
+				Текущее значение <code>value</code>: "
+				<output className={styles['current-value']}>{value}</output>"
+			</p>
+			{error && <div className={styles.error}>{error}</div>}
+			<div className={styles['buttons-container']}>
+				<button className={styles.button} onClick={onInputButtonClick}>
+					Ввести новое
+				</button>
+				<button
+					className={styles.button}
+					onClick={onAddButtonClick}
+					disabled={!isValueValid}
+				>
+					Добавить в список
+				</button>
 			</div>
-			<div className={styles.buttons}>
-				<div className={styles.numberButtons}>
-					{numbers.map((number) => (
-						<button
-							key={number}
-							className={`${styles.button} ${number === '0' ? styles.zeroButton : ''}`}
-							onClick={() => handleNumberClick(number)}
-						>
-							{number}
-						</button>
-					))}
-				</div>
-				<div className={styles.operationButtons}>
-					<button className={styles.button} onClick={handleResetClick}>
-						C
-					</button>
-					<button
-						className={styles.button}
-						onClick={() => handleOperationClick('-')}
-					>
-						-
-					</button>
-					<button
-						className={styles.button}
-						onClick={() => handleOperationClick('+')}
-					>
-						+
-					</button>
-					<button className={styles.button} onClick={handleEqualsClick}>
-						=
-					</button>
-				</div>
+			<div className={styles['list-container']}>
+				<h2 className={styles['list-heading']}>Список:</h2>
+				{list.length === 0 ? (
+					<p className={styles['no-margin-text']}>Нет добавленных элементов</p>
+				) : (
+					<ul className={styles.list}>
+						{list.map((item) => (
+							<li key={item.id} className={styles['list-item']}>
+								{item.value} ({item.date})
+							</li>
+						))}
+					</ul>
+				)}
 			</div>
 		</div>
 	);
