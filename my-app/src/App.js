@@ -1,73 +1,83 @@
 import React, { useState } from 'react';
-import styles from './App.module.css';
+import styles from './app.module.css';
+import data from './data.json';
 
-function App() {
-	const [value, setValue] = useState('');
-	const [list, setList] = useState([]);
-	const [error, setError] = useState('');
+export const App = () => {
+	// Состояния для шагов и активного индекса
+	const [steps] = useState(data);
+	const [activeIndex, setActiveIndex] = useState(0);
 
-	const isValueValid = value.length >= 3;
+	// Флаги для проверки первого и последнего шага
+	const isFirstStep = activeIndex === 0;
+	const isLastStep = activeIndex === steps.length - 1;
 
-	const onInputButtonClick = () => {
-		const promptValue = prompt('Введите значение:');
-
-		if (promptValue && promptValue.length >= 3) {
-			setValue(promptValue);
-			setError('');
+	// Обработчик для перехода к следующему шагу
+	const handleNext = () => {
+		if (isLastStep) {
+			setActiveIndex(0); // Начать сначала
 		} else {
-			setError('Введенное значение должно содержать минимум 3 символа');
+			setActiveIndex((prevIndex) => prevIndex + 1);
 		}
 	};
 
-	const onAddButtonClick = () => {
-		if (isValueValid) {
-			const newItem = {
-				id: Date.now(),
-				value: value,
-				date: new Date().toLocaleString(),
-			};
-			setList((prevList) => [...prevList, newItem]);
-			setValue('');
-			setError('');
+	// Обработчик для перехода к предыдущему шагу
+	const handlePrev = () => {
+		if (!isFirstStep) {
+			setActiveIndex((prevIndex) => prevIndex - 1);
 		}
+	};
+
+	// Обработчик для установки конкретного шага
+	const handleStepClick = (index) => {
+		setActiveIndex(index);
 	};
 
 	return (
-		<div className={styles.app}>
-			<h1 className={styles['page-heading']}>Ввод значения</h1>
-			<p className={styles['no-margin-text']}>
-				Текущее значение <code>value</code>: "
-				<output className={styles['current-value']}>{value}</output>"
-			</p>
-			{error && <div className={styles.error}>{error}</div>}
-			<div className={styles['buttons-container']}>
-				<button className={styles.button} onClick={onInputButtonClick}>
-					Ввести новое
-				</button>
-				<button
-					className={styles.button}
-					onClick={onAddButtonClick}
-					disabled={!isValueValid}
-				>
-					Добавить в список
-				</button>
-			</div>
-			<div className={styles['list-container']}>
-				<h2 className={styles['list-heading']}>Список:</h2>
-				{list.length === 0 ? (
-					<p className={styles['no-margin-text']}>Нет добавленных элементов</p>
-				) : (
-					<ul className={styles.list}>
-						{list.map((item) => (
-							<li key={item.id} className={styles['list-item']}>
-								{item.value} ({item.date})
-							</li>
-						))}
+		<div className={styles.container}>
+			<div className={styles.card}>
+				<h1>Инструкция по готовке пельменей</h1>
+				<div className={styles.steps}>
+					<div className={styles['steps-content']}>
+						{/* Выводим контент активного шага */}
+						<h2>{steps[activeIndex].title}</h2>
+						<p>{steps[activeIndex].content}</p>
+					</div>
+					<ul className={styles['steps-list']}>
+						{/* Выводим список шагов */}
+						{steps.map((step, index) => {
+							const isActive = index === activeIndex;
+							const isDone = index <= activeIndex;
+
+							return (
+								<li
+									key={step.id}
+									className={`${styles['steps-item']} ${isDone ? styles.done : ''} ${isActive ? styles.active : ''}`}
+								>
+									<button
+										className={styles['steps-item-button']}
+										onClick={() => handleStepClick(index)}
+									>
+										{index + 1}
+									</button>
+									{step.title}
+								</li>
+							);
+						})}
 					</ul>
-				)}
+					<div className={styles['buttons-container']}>
+						<button
+							className={styles.button}
+							onClick={handlePrev}
+							disabled={isFirstStep}
+						>
+							Назад
+						</button>
+						<button className={styles.button} onClick={handleNext}>
+							{isLastStep ? 'Начать сначала' : 'Далее'}
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
-}
-
-export default App;
+};
