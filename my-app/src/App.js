@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './App.module.css';
 
 function App() {
@@ -7,6 +7,7 @@ function App() {
 	const [isResult, setIsResult] = useState(false);
 
 	const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+	const operations = ['+', '-'];
 
 	const handleNumberClick = (number) => {
 		if (isResult) {
@@ -28,9 +29,10 @@ function App() {
 
 	const handleEqualsClick = () => {
 		try {
-			const evaluatedResult = eval(display);
-			setResult(evaluatedResult);
-			setDisplay(evaluatedResult.toString());
+			const sanitizedDisplay = display.replace(/[^-()\d/*+.]/g, ''); // sanitize the input
+			const getResult = new Function('return ' + sanitizedDisplay)();
+			setResult(getResult);
+			setDisplay(getResult.toString());
 			setIsResult(true);
 		} catch (error) {
 			setDisplay('Error');
@@ -42,6 +44,27 @@ function App() {
 		setResult(null);
 		setIsResult(false);
 	};
+
+	const handleKeyPress = (event) => {
+		const key = event.key;
+
+		if (numbers.includes(key)) {
+			handleNumberClick(key);
+		} else if (operations.includes(key)) {
+			handleOperationClick(key);
+		} else if (key === 'Enter') {
+			handleEqualsClick();
+		} else if (key === 'Escape') {
+			handleResetClick();
+		}
+	};
+
+	useEffect(() => {
+		window.addEventListener('keydown', handleKeyPress);
+		return () => {
+			window.removeEventListener('keydown', handleKeyPress);
+		};
+	}, [display, result, isResult]);
 
 	return (
 		<div className={styles.calculator}>
